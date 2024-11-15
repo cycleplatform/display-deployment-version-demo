@@ -3,11 +3,8 @@ const express = require('express');
 const app = express();
 const deploymentVersion = process.env.CYCLE_DEPLOYMENT_VERSION;
 
-app.get('/_health', (req, res) => {
-  res.status(200).json({ message: 'OK' });
-});
-
-app.get('/', (req, res) => {
+// Define a function to handle all specified routes
+const commonHandler = (req, res) => {
   const htmlContent = `
       <html>
       <head>
@@ -47,12 +44,17 @@ app.get('/', (req, res) => {
       </html>
     `;
   res.send(htmlContent);
+};
+
+// Define routes
+app.get('/_health', (req, res) => {
+  res.status(200).json({ message: 'OK' });
 });
 
-// Wildcard route to redirect all other endpoints to "/"
-app.get('*', (req, res) => {
-  res.redirect('/');
-});
+app.get('/', commonHandler);
+app.get('/apple', commonHandler);
+app.get('/orange', commonHandler);
+app.get('/banana', commonHandler);
 
 const server = app.listen(3000, () => {
   console.log('Server is running on port 3000');
