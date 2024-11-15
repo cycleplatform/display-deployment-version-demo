@@ -1,18 +1,14 @@
 const express = require('express');
 
-
 const app = express();
-const deploymentVersion = process.env.CYCLE_DEPLOYMENT_VERSION
+const deploymentVersion = process.env.CYCLE_DEPLOYMENT_VERSION;
+
 app.get('/_health', (req, res) => {
   res.status(200).json({ message: 'OK' });
 });
 
-app.get('/',  (req, res) => {
-  
-    
-
-    // Create an HTML content with styling
-    const htmlContent = `
+app.get('/', (req, res) => {
+  const htmlContent = `
       <html>
       <head>
         <title>Deployments Data</title>
@@ -39,25 +35,23 @@ app.get('/',  (req, res) => {
             line-height: 1.5;
             overflow: auto; /* Enables scrolling if content is too wide */
           }
-          p{
+          p {
             font-size: 1.17em;
           }
         </style>
       </head>
       <body>
-        
-          <img src="https://static.cycle.io/icons/logo/logo-white.svg" className="App-logo" alt="logo"  width="400px" " />
-          <p><b>Deployment Version</b>: ${deploymentVersion}<p>
-          
-        
-        
+        <img src="https://static.cycle.io/icons/logo/logo-white.svg" className="App-logo" alt="logo" width="400px" />
+        <p><b>Deployment Version</b>: ${deploymentVersion}<p>
       </body>
       </html>
     `;
+  res.send(htmlContent);
+});
 
-    res.send(htmlContent); // Send the HTML with the JSON data embedded
-
- 
+// Wildcard route to redirect all other endpoints to "/"
+app.get('*', (req, res) => {
+  res.redirect('/');
 });
 
 const server = app.listen(3000, () => {
