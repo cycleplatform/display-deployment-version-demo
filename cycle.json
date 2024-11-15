@@ -1,7 +1,7 @@
 {
     "version": "1.0",
     "containers": {
-      "website": {
+      "orange": {
         "name": "website",
         "image": {
           "name": "website",
