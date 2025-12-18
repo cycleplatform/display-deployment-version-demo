@@ -1,68 +1,73 @@
 {
-    "version": "1.0",
-    "containers": {
-      "backend": {
+  "version": "1.0",
+  "containers": {
+    "backend": {
+      "name": "backend",
+      "image": {
         "name": "backend",
-        "image": {
-          "name": "backend",
-          "origin": {
-            "type": "docker-file",
-            "details": {
-              "context_dir": "/",
-              "build_file": "/Dockerfile"
-            }
-          }
-        },
-        "config": {
-          "network": {
-            "public": "enable",
-            "hostname": "backend",
-            "ports": ["80:3000", "443:3000"]
-          },
-          "deploy": {
-            "instances": 1,
-            "health_check": {
-                "command": "./health_check.sh",
-                "retries": 3,
-                "interval": "10s",
-                "timeout": "30s",
-                "restart": true,
-                "delay": "10s"
-            }
+        "origin": {
+          "type": "docker-file",
+          "details": {
+            "context_dir": "/",
+            "build_file": "/Dockerfile"
           }
         }
       },
-        "frontend": {
-        "name": "frontend",
-        "image": {
-          "name": "frontend",
-          "origin": {
-            "type": "docker-file",
-            "details": {
-              "context_dir": "/",
-              "build_file": "/Dockerfile"
-            }
+      "config": {
+        "network": {
+          "public": "enable",
+          "hostname": "backend",
+          "ports": ["80:3000", "443:3000"]
+        },
+        "runtime": {
+          "environment_vars": {
+            "VAR_ONE": "{{var-one}}",
+            "VAR_TWO": "{{var-two}}"
           }
         },
-        "config": {
-          "network": {
-            "public": "enable",
-            "hostname": "frontend",
-            "ports": ["80:3000", "443:3000"]
-          },
-          "deploy": {
-            "instances": 1,
-            "health_check": {
-                "command": "./health_check.sh",
-                "retries": 3,
-                "interval": "10s",
-                "timeout": "30s",
-                "restart": true,
-                "delay": "10s"
-            }
+        "deploy": {
+          "instances": "{{$instances}}",
+          "health_check": {
+            "command": "./health_check.sh",
+            "retries": 3,
+            "interval": "10s",
+            "timeout": "30s",
+            "restart": true,
+            "delay": "10s"
+          }
+        }
+      }
+    },
+    "frontend": {
+      "name": "frontend",
+      "image": {
+        "name": "frontend",
+        "origin": {
+          "type": "docker-file",
+          "details": {
+            "context_dir": "/",
+            "build_file": "/Dockerfile"
+          }
+        }
+      },
+      "config": {
+        "network": {
+          "public": "enable",
+          "hostname": "frontend",
+          "ports": ["80:3000", "443:3000"]
+        },
+        "deploy": {
+          "instances": 1,
+          "health_check": {
+            "command": "./health_check.sh",
+            "retries": 3,
+            "interval": "10s",
+            "timeout": "30s",
+            "restart": true,
+            "delay": "10s"
           }
         }
       }
     }
-      
   }
+}
