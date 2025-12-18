@@ -9,7 +9,12 @@
           "type": "docker-file",
           "details": {
             "context_dir": "/",
-            "build_file": "/Dockerfile"
+            "build_file": "/extra/Dockerfile"
+          }
+        },
+        "build": {
+          "args": {
+            "REQUIRED_ARG": "{{required-arg}}"
           }
         }
       },
@@ -26,15 +31,7 @@
           }
         },
         "deploy": {
-          "instances": "{{$instances}}",
-          "health_check": {
-            "command": "./health_check.sh",
-            "retries": 3,
-            "interval": "10s",
-            "timeout": "30s",
-            "restart": true,
-            "delay": "10s"
-          }
+          "instances": "{{$instances}}"
         }
       }
     },
