@@ -59,7 +59,12 @@
                 "timeout": "30s",
                 "restart": true,
                 "delay": "10s"
-            }
+            },
+            "readiness_check": {                                                               
+                "command": "nc -z localhost 3000",                                             
+                "interval": "10s",                                                             
+                "timeout": "30s"                                                               
+            } 
           }
         }
       }
